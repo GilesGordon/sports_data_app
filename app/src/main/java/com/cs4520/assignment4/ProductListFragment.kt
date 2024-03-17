@@ -52,7 +52,7 @@ class ProductListFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 if (isNetworkAvailable()) {
-                    val products = repository.getProducts()
+                    val products = repository.getProducts(0)
                     if (products.isEmpty()) {
                         binding.textView.visibility = View.VISIBLE
                     } else {

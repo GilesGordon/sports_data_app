@@ -4,7 +4,7 @@ class ProductRepository(private val productApi: ProductApi, private val productD
     suspend fun getProducts(page: Int? = null): List<Product> {
         return try {
             println("MyApp: before API")
-            val products = productApi.getProducts() //page
+            val products = productApi.getProducts(page)
             println("MyApp: products:" + products)
             val distinctProducts = products.distinctBy { it.name }
             val filteredProducts = distinctProducts.filter { product ->

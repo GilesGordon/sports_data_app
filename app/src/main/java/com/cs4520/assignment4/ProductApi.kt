@@ -6,6 +6,6 @@ import retrofit2.http.Query
 interface ProductApi {
     @GET(Api.ENDPOINT)
     suspend fun getProducts(
-//        @Query("page") page: Int? = null
+        @Query("page") page: Int? = null
     ): List<Product>
 }
