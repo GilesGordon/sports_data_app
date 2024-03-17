@@ -1,5 +1,6 @@
 package com.cs4520.assignment4
 
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cs4520.assignment4.databinding.FragmentItemViewBinding
 import com.cs4520.assignment4.databinding.FragmentProductListBinding
 
-class ProductAdapter(private val products: List<Product>) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
+class ProductAdapter(
+    private val products: List<Product>,
+) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = FragmentItemViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            FragmentItemViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -22,7 +26,8 @@ class ProductAdapter(private val products: List<Product>) : RecyclerView.Adapter
 
     override fun getItemCount(): Int = products.size
 
-    inner class ViewHolder(private val binding: FragmentItemViewBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: FragmentItemViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(product: Product) {
 
             if (product.expiryDate != null) {
@@ -36,6 +41,7 @@ class ProductAdapter(private val products: List<Product>) : RecyclerView.Adapter
                     binding.root.setBackgroundColor(Color.parseColor("#E06666"))
                     binding.imageview.setImageResource(R.drawable.equipment)
                 }
+
                 "Food" -> {
                     binding.root.setBackgroundColor(Color.parseColor("#FFD965"))
                     binding.imageview.setImageResource(R.drawable.food)

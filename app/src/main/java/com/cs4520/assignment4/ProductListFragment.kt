@@ -47,15 +47,21 @@ class ProductListFragment : Fragment() {
         val productApi = Api.productApi
         val productDao = AppDatabase.getDatabase(requireContext()).productDao()
         val repository = ProductRepository(productApi, productDao)
+        println("MyApp: load products")
         lifecycleScope.launch {
             try {
+                println("MyApp: try")
                 if (isNetworkAvailable()) {
                     val products = repository.getProducts()
+                    println("MyApp: products again:" + products)
                     if (products.isEmpty()) {
+                        println("MyApp: empty")
                         showNoProductsMessage()
                     } else {
+                        println("MyApp: before adapter set")
                         productAdapter = ProductAdapter(products)
                         recyclerView.adapter = productAdapter
+                        println("MyApp: after adapter set")
 //                        saveProductsToDatabase(products)
                     }
                 } else {
