@@ -28,7 +28,7 @@ interface ProductDao {
     suspend fun getAllProducts(): List<ProductEntity>
 }
 
-@Database(entities = [ProductEntity::class], version = 1)
+@Database(entities = [ProductEntity::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
 
