@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -16,9 +19,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.Navigation
 import com.cs4520.assignment4.databinding.FragmentLoginBinding
 
@@ -35,23 +43,44 @@ fun LoginScreen(onLogin: (username: String, password: String, pageNumber: Int) -
     var pageNumber by remember { mutableStateOf("") }
     val context = LocalContext.current
 
-    Column {
+    ConstraintLayout (
+        modifier = Modifier.fillMaxWidth())
+    {
+        val (user, pass, page, button) = createRefs()
         TextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text("Username") }
+            label = { Text("Username") },
+            modifier = Modifier
+                .constrainAs(user) {
+                    top.linkTo(parent.top, margin = 130.dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
         )
         TextField(
             value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier
+                .constrainAs(pass) {
+                    top.linkTo(user.bottom, margin = 20.dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
         )
         TextField(
             value = pageNumber,
             onValueChange = { pageNumber = it },
             label = { Text("Page Number") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier
+                .constrainAs(page) {
+                    top.linkTo(pass.bottom, margin = 20.dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
         )
         Button(
             onClick = {
@@ -68,7 +97,14 @@ fun LoginScreen(onLogin: (username: String, password: String, pageNumber: Int) -
                 username = ""
                 password = ""
                 pageNumber = ""
-            }
+            },
+            modifier = Modifier
+                .constrainAs(button) {
+                    top.linkTo(page.bottom, margin = 20.dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    width = Dimension.value(200.dp)
+                }
         ) {
             Text("Login")
         }

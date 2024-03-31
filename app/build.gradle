@@ -92,4 +92,7 @@ dependencies {
 
     // Compose Livedata
     implementation 'androidx.compose.runtime:runtime-livedata:1.2.0-alpha07'
+
+    //Work Manager
+    implementation 'androidx.work:work-runtime-ktx:2.8.1'
 }

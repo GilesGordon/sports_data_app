@@ -46,10 +46,9 @@ fun ProductListScreen(pageNumber: Int, repository: ProductRepository) {
     val isNetworkAvailable = networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
 
     LaunchedEffect(true) {
+        viewModel.scheduleProductRefresh(context)
         viewModel.loadProducts(isNetworkAvailable, pageNumber)
     }
-
-    println("MyApp: recycle view products:" + products)
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -99,8 +98,6 @@ fun ProductListScreen(pageNumber: Int, repository: ProductRepository) {
         }
     }
 }
-
-
 
 @Composable
 fun ProductItem(product: Product) {
