@@ -18,32 +18,34 @@ class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentLoginBinding.inflate(layoutInflater)
-        val view = binding.root
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.Login.setOnClickListener {
-            if (binding.Username.text.toString() == "admin"
-                && binding.Password.text.toString() == "admin") {
+            val username = binding.Username.text.toString()
+            val password = binding.Password.text.toString()
+            val pageNumber = binding.pageNumber.text.toString().toIntOrNull() ?: 1
+
+            if (username == "admin" && password == "admin") {
+                val bundle = Bundle().apply {
+                    putInt("page", pageNumber)
+                }
                 Navigation.findNavController(view)
-                    .navigate(R.id.action_loginFragment_to_productListFragment)
+                    .navigate(R.id.action_loginFragment_to_productListFragment, bundle)
             } else {
                 Toast.makeText(activity, "Incorrect credentials", Toast.LENGTH_SHORT).show()
             }
+
             binding.Username.text.clear()
             binding.Password.text.clear()
+            binding.pageNumber.text.clear()
         }
     }
 }

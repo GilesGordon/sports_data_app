@@ -1,4 +1,6 @@
-package com.cs4520.assignment4
+package com.cs4520.assignment4.databases
+
+import com.cs4520.assignment4.Product
 
 class ProductRepository(private val productApi: ProductApi, private val productDao: ProductDao) {
     suspend fun getProducts(page: Int? = null): List<Product> {

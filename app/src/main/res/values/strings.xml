@@ -5,4 +5,7 @@
     <string name="title_activity_main">MainActivity</string>
   <string name="LOGIN">LOGIN</string>
     <string name="no_products_available">No Products Available</string>
+    <string name="page_number">Page Number</string>
+    <string name="username">Username</string>
+  <string name="password">Password</string>
 </resources>
