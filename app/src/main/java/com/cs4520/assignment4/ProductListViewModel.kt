@@ -1,22 +1,29 @@
 package com.cs4520.assignment4
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cs4520.assignment4.databases.ProductRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 
 class ProductListViewModel(private val repository: ProductRepository) : ViewModel() {
-    private val _products = MutableLiveData<List<Product>>()
-    val products: LiveData<List<Product>> get() = _products
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> get() = _isLoading
+    //states
+    private val _products = mutableStateOf<List<Product>>(emptyList())
+    val products: State<List<Product>> get() = _products
 
-    private val _isError = MutableLiveData<Boolean>()
-    val isError: LiveData<Boolean> get() = _isError
+    private val _isLoading = mutableStateOf(false)
+    val isLoading: State<Boolean> get() = _isLoading
+
+    private val _isError = mutableStateOf(false)
+    val isError: State<Boolean> get() = _isError
 
     fun loadProducts(isNetworkAvailable: Boolean, pageNumber: Int) {
         viewModelScope.launch {
