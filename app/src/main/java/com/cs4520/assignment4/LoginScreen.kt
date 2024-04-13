@@ -58,8 +58,7 @@ fun LoginScreen(onLogin: (username: String, password: String, sport: String?) ->
         TextField(
             value = sport,
             onValueChange = { sport = it },
-            label = { Text("Page Number") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            label = { Text("sport") },
             modifier = Modifier
                 .constrainAs(page) {
                     top.linkTo(pass.bottom, margin = 20.dp)

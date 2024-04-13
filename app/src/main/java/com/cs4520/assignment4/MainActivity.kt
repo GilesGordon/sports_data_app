@@ -13,6 +13,8 @@ import com.cs4520.assignment4.databases.MLS.SoccerApi
 import com.cs4520.assignment4.databases.MLS.SoccerDatabase
 import com.cs4520.assignment4.databases.NBA.BasketballApi
 import com.cs4520.assignment4.databases.NBA.AppDatabase
+import com.cs4520.assignment4.databases.NFL.FootballApi
+import com.cs4520.assignment4.databases.NFL.FootballDatabase
 import com.cs4520.assignment4.databases.SportsRepository
 
 
@@ -21,9 +23,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val basketballApi = BasketballApi.sportsApi
         val soccerApi = SoccerApi.sportsApi
+        val footballApi = FootballApi.sportsApi
         val basketballDao = AppDatabase.getDatabase(applicationContext).basketballDao()
         val soccerDao = SoccerDatabase.getDatabase(applicationContext).soccerDao()
-        val repository = SportsRepository(basketballApi, basketballDao, soccerApi, soccerDao)
+        val footballDao = FootballDatabase.getDatabase(applicationContext).footballDao()
+        val repository = SportsRepository(basketballApi, basketballDao,
+            soccerApi, soccerDao,
+            footballApi, footballDao)
         setContent {
             MainScreen(repository)
         }

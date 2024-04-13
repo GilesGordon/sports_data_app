@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cs4520.assignment4.databases.MLS.SoccerFixture
 import com.cs4520.assignment4.databases.NBA.BasketballGame
+import com.cs4520.assignment4.databases.NFL.FootballGame
 import com.cs4520.assignment4.databases.SportsRepository
 import kotlinx.coroutines.launch
 
@@ -19,6 +20,9 @@ class ProductListViewModel(private val repository: SportsRepository) : ViewModel
     private val _soccerFixtures = mutableStateOf<List<SoccerFixture>>(emptyList())
     val soccerFixtures: State<List<SoccerFixture>> get() = _soccerFixtures
 
+    private val _footballGames = mutableStateOf<List<FootballGame>>(emptyList())
+    val footballGames: State<List<FootballGame>> get() = _footballGames
+
     private val _isLoading = mutableStateOf(false)
     val isLoading: State<Boolean> get() = _isLoading
 
@@ -31,6 +35,7 @@ class ProductListViewModel(private val repository: SportsRepository) : ViewModel
             try {
                 var result1 : List<BasketballGame> = emptyList()
                 var result2 : List<SoccerFixture> = emptyList()
+                var result3 : List<FootballGame> = emptyList()
 
                 if (isNetworkAvailable) {
                     if (sport == "basketball") {
@@ -39,12 +44,14 @@ class ProductListViewModel(private val repository: SportsRepository) : ViewModel
                     if (sport == "soccer") {
                         result2 = repository.getSoccerFixtures() // league 909
                     }
-//                    if (sport == "football") {
-//                    }
+                    if (sport == "football") {
+                        result3 = repository.getFootballGames() // league 1
+                    }
                 }
                 _basketballGames.value = result1
                 _soccerFixtures.value = result2
-                _isError.value = (result1.isEmpty() && result2.isEmpty())
+                _footballGames.value = result3
+                _isError.value = (result1.isEmpty() && result2.isEmpty() && result3.isEmpty())
             } catch (e: Exception) {
                 _isError.value = true
             }
