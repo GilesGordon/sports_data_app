@@ -1,15 +1,8 @@
 package com.cs4520.assignment4
 
-import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -21,26 +14,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.navigation.Navigation
-import com.cs4520.assignment4.databinding.FragmentLoginBinding
 
-/**
- * A simple [Fragment] subclass.
- * Use the [LoginFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 
 @Composable
-fun LoginScreen(onLogin: (username: String, password: String, pageNumber: Int) -> Unit) {
+fun LoginScreen(onLogin: (username: String, password: String, sport: String?) -> Unit) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var pageNumber by remember { mutableStateOf("") }
+    var sport by remember { mutableStateOf("") }
     val context = LocalContext.current
 
     ConstraintLayout (
@@ -71,8 +56,8 @@ fun LoginScreen(onLogin: (username: String, password: String, pageNumber: Int) -
                 }
         )
         TextField(
-            value = pageNumber,
-            onValueChange = { pageNumber = it },
+            value = sport,
+            onValueChange = { sport = it },
             label = { Text("Page Number") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier
@@ -86,17 +71,17 @@ fun LoginScreen(onLogin: (username: String, password: String, pageNumber: Int) -
             onClick = {
                 val enteredUsername = username.trim()
                 val enteredPassword = password.trim()
-                val enteredPageNumber = pageNumber.toIntOrNull() ?: 1
+                val enteredSport = sport.trim()
 
                 if (enteredUsername == "admin" && enteredPassword == "admin") {
-                    onLogin(enteredUsername, enteredPassword, enteredPageNumber)
+                    onLogin(enteredUsername, enteredPassword, enteredSport)
                 } else {
                     Toast.makeText(context, "Incorrect credentials", Toast.LENGTH_SHORT).show()
                 }
 
                 username = ""
                 password = ""
-                pageNumber = ""
+                sport = ""
             },
             modifier = Modifier
                 .constrainAs(button) {
@@ -110,39 +95,3 @@ fun LoginScreen(onLogin: (username: String, password: String, pageNumber: Int) -
         }
     }
 }
-
-//class LoginFragment : Fragment() {
-//
-//    private lateinit var binding: FragmentLoginBinding
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        binding = FragmentLoginBinding.inflate(layoutInflater)
-//        return binding.root
-//    }
-//
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//        binding.Login.setOnClickListener {
-//            val username = binding.Username.text.toString()
-//            val password = binding.Password.text.toString()
-//            val pageNumber = binding.pageNumber.text.toString().toIntOrNull() ?: 1
-//
-//            if (username == "admin" && password == "admin") {
-//                val bundle = Bundle().apply {
-//                    putInt("page", pageNumber)
-//                }
-//                Navigation.findNavController(view)
-//                    .navigate(R.id.action_loginFragment_to_productListFragment, bundle)
-//            } else {
-//                Toast.makeText(activity, "Incorrect credentials", Toast.LENGTH_SHORT).show()
-//            }
-//
-//            binding.Username.text.clear()
-//            binding.Password.text.clear()
-//            binding.pageNumber.text.clear()
-//        }
-//    }
-//}

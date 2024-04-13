@@ -1,4 +1,4 @@
-package com.cs4520.assignment4.databases
+package com.cs4520.assignment4.databases.NBA
 
 import android.content.Context
 import androidx.room.Dao
@@ -11,16 +11,12 @@ import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.cs4520.assignment4.Country
-import com.cs4520.assignment4.League
-import com.cs4520.assignment4.Scores
-import com.cs4520.assignment4.Status
-import com.cs4520.assignment4.Teams
 
-@TypeConverters(StatusConverter::class, LeagueConverter::class, CountryConverter::class,
-    TeamsConverter::class, ScoresConverter::class)
+@TypeConverters(
+    NBAStatusConverter::class, NBALeagueConverter::class, NBACountryConverter::class,
+    NBATeamsConverter::class, NBAScoresConverter::class)
 @Entity(tableName = "games")
-data class GameEntity(
+data class BasketballGameEntity(
     @PrimaryKey val id: Int,
     val date: String,
     val time: String,
@@ -28,27 +24,28 @@ data class GameEntity(
     val timezone: String,
     val stage: String?,
     val week: String?,
-    val status: Status,
-    val league: League,
-    val country: Country,
-    val teams: Teams,
-    val scores: Scores,
+    val status: NBAStatus,
+    val league: NBALeague,
+    val country: NBACountry,
+    val teams: NBATeams,
+    val scores: NBAScores,
 )
 
 @Dao
-interface SportsDao {
+interface BasketballDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertGames(products: List<GameEntity>)
+    suspend fun insertGames(products: List<BasketballGameEntity>)
 
     @Query("SELECT * FROM games")
-    suspend fun getAllGames(): List<GameEntity>
+    suspend fun getAllGames(): List<BasketballGameEntity>
 }
 
-@TypeConverters(StatusConverter::class, LeagueConverter::class, CountryConverter::class,
-    TeamsConverter::class, ScoresConverter::class)
-@Database(entities = [GameEntity::class], version = 3)
+@TypeConverters(
+    NBAStatusConverter::class, NBALeagueConverter::class, NBACountryConverter::class,
+    NBATeamsConverter::class, NBAScoresConverter::class)
+@Database(entities = [BasketballGameEntity::class], version = 3)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun SportsDao(): SportsDao
+    abstract fun basketballDao(): BasketballDao
 
     companion object {
         @Volatile

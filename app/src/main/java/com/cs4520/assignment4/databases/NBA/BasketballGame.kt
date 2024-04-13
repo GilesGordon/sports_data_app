@@ -1,6 +1,6 @@
-package com.cs4520.assignment4
+package com.cs4520.assignment4.databases.NBA
 
-data class Game(
+data class BasketballGame(
     val id: Int,
     val date: String,
     val time: String,
@@ -8,20 +8,20 @@ data class Game(
     val timezone: String,
     val stage: String?,
     val week: String?,
-    val status: Status,
-    val league: League,
-    val country: Country,
-    val teams: Teams,
-    val scores: Scores,
+    val status: NBAStatus,
+    val league: NBALeague,
+    val country: NBACountry,
+    val teams: NBATeams,
+    val scores: NBAScores,
 )
 
-data class Status(
+data class NBAStatus(
     val long: String,
     val short: String,
     val timer: String?,
 )
 
-data class League(
+data class NBALeague(
     val id: Int,
     val name: String,
     val type: String,
@@ -29,30 +29,30 @@ data class League(
     val logo: String
 )
 
-data class Country(
+data class NBACountry(
     val id: Int,
     val name: String,
     val code: String,
     val flag: String,
 )
 
-data class Teams(
-    val home: Team,
-    val away: Team,
+data class NBATeams(
+    val home: NBATeam,
+    val away: NBATeam,
 )
 
-data class Team(
+data class NBATeam(
     val id: Number,
     val name: String,
     val logo: String,
 )
 
-data class Scores(
-    val home: Score,
-    val away: Score,
+data class NBAScores(
+    val home: NBAScore,
+    val away: NBAScore,
 )
 
-data class Score(
+data class NBAScore(
     val quarter_1: Int,
     val quarter_2: Int,
     val quarter_3: Int,

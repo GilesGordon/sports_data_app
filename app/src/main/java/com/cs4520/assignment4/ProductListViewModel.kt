@@ -1,22 +1,23 @@
 package com.cs4520.assignment4
 
-import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
+import com.cs4520.assignment4.databases.MLS.SoccerFixture
+import com.cs4520.assignment4.databases.NBA.BasketballGame
 import com.cs4520.assignment4.databases.SportsRepository
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 
 
 class ProductListViewModel(private val repository: SportsRepository) : ViewModel() {
 
     //states
-    private val _products = mutableStateOf<List<Game>>(emptyList())
-    val products: State<List<Game>> get() = _products
+    private val _basketballGames = mutableStateOf<List<BasketballGame>>(emptyList())
+    val basketballGames: State<List<BasketballGame>> get() = _basketballGames
+
+    private val _soccerFixtures = mutableStateOf<List<SoccerFixture>>(emptyList())
+    val soccerFixtures: State<List<SoccerFixture>> get() = _soccerFixtures
 
     private val _isLoading = mutableStateOf(false)
     val isLoading: State<Boolean> get() = _isLoading
@@ -28,12 +29,22 @@ class ProductListViewModel(private val repository: SportsRepository) : ViewModel
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                var result : List<Game> = emptyList()
-                if (isNetworkAvailable && sport == "basketball") {
-                    result = repository.getGames(12)
+                var result1 : List<BasketballGame> = emptyList()
+                var result2 : List<SoccerFixture> = emptyList()
+
+                if (isNetworkAvailable) {
+                    if (sport == "basketball") {
+                        result1 = repository.getBasketballGames() // league 12
+                    }
+                    if (sport == "soccer") {
+                        result2 = repository.getSoccerFixtures() // league 909
+                    }
+//                    if (sport == "football") {
+//                    }
                 }
-                _products.value = result
-                _isError.value = result.isEmpty()
+                _basketballGames.value = result1
+                _soccerFixtures.value = result2
+                _isError.value = (result1.isEmpty() && result2.isEmpty())
             } catch (e: Exception) {
                 _isError.value = true
             }
