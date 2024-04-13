@@ -1,1 +1,1 @@
-App that displayes the product list retrieved from an API
+App that displays sports data retrieved from an API

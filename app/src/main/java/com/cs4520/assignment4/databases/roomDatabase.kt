@@ -10,27 +10,45 @@ import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.cs4520.assignment4.Country
+import com.cs4520.assignment4.League
+import com.cs4520.assignment4.Scores
+import com.cs4520.assignment4.Status
+import com.cs4520.assignment4.Teams
 
-@Entity(tableName = "products")
-data class ProductEntity(
-    @PrimaryKey val name: String,
-    val type: String,
-    val expiryDate: String?,
-    val price: Double
+@TypeConverters(StatusConverter::class, LeagueConverter::class, CountryConverter::class,
+    TeamsConverter::class, ScoresConverter::class)
+@Entity(tableName = "games")
+data class GameEntity(
+    @PrimaryKey val id: Int,
+    val date: String,
+    val time: String,
+    val timestamp: Int,
+    val timezone: String,
+    val stage: String?,
+    val week: String?,
+    val status: Status,
+    val league: League,
+    val country: Country,
+    val teams: Teams,
+    val scores: Scores,
 )
 
 @Dao
-interface ProductDao {
+interface SportsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertProducts(products: List<ProductEntity>)
+    suspend fun insertGames(products: List<GameEntity>)
 
-    @Query("SELECT * FROM products")
-    suspend fun getAllProducts(): List<ProductEntity>
+    @Query("SELECT * FROM games")
+    suspend fun getAllGames(): List<GameEntity>
 }
 
-@Database(entities = [ProductEntity::class], version = 2)
+@TypeConverters(StatusConverter::class, LeagueConverter::class, CountryConverter::class,
+    TeamsConverter::class, ScoresConverter::class)
+@Database(entities = [GameEntity::class], version = 3)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun productDao(): ProductDao
+    abstract fun SportsDao(): SportsDao
 
     companion object {
         @Volatile
@@ -42,7 +60,7 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app_database"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 instance
             }
