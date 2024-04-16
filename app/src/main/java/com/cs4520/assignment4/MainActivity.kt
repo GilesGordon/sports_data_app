@@ -16,6 +16,10 @@ import com.cs4520.assignment4.databases.NBA.AppDatabase
 import com.cs4520.assignment4.databases.NFL.FootballApi
 import com.cs4520.assignment4.databases.NFL.FootballDatabase
 import com.cs4520.assignment4.databases.SportsRepository
+import com.cs4520.assignment4.screens.HomeScreen
+import com.cs4520.assignment4.screens.MLSListScreen
+import com.cs4520.assignment4.screens.NBAListScreen
+import com.cs4520.assignment4.screens.NFLListScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -39,9 +43,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(repository: SportsRepository) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "login") {
-        composable("login") {
-            LoginScreen { username, password, sport ->
+    NavHost(navController = navController, startDestination = "home") {
+        composable("home") {
+            HomeScreen { sport ->
                 navController.navigate("productList/$sport")
             }
         }
@@ -49,8 +53,12 @@ fun MainScreen(repository: SportsRepository) {
             route = "productList/{sport}",
             arguments = listOf(navArgument("sport") { type = NavType.StringType })
         ) { backStackEntry ->
-            val sport = backStackEntry.arguments?.getString("sport") ?: ""
-            ProductListScreen(sport, repository)
+            when (val sport = backStackEntry.arguments?.getString("sport") ?: "") {
+                "basketball" -> NBAListScreen(sport, repository)
+                "soccer" -> MLSListScreen(sport, repository)
+                "football" -> NFLListScreen(sport, repository)
+                else -> null
+            }
         }
     }
 }

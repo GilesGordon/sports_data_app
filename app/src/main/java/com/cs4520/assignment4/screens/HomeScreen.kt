@@ -1,7 +1,8 @@
-package com.cs4520.assignment4
+package com.cs4520.assignment4.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,10 +20,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cs4520.assignment4.R
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(onLogin: (sport: String?) -> Unit) {
 
     Column {
 
@@ -31,6 +34,9 @@ fun HomeScreen() {
                 .padding(12.dp)
                 .clip(RoundedCornerShape(24.dp))
                 .height(200.dp)
+                .clickable{
+                    onLogin("basketball")
+                }
         ) {
             Image(painterResource(id = R.drawable.nba), contentDescription = "content", modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop )
             Text(
@@ -57,8 +63,11 @@ fun HomeScreen() {
             modifier = Modifier
                 .padding(12.dp)
                 .clip(RoundedCornerShape(24.dp))
+                .clickable{
+                    onLogin("soccer")
+                }
         ) {
-            Image(painterResource(id = R.drawable.soccer), contentDescription = "content")
+            Image(painterResource(id = R.drawable.mls), contentDescription = "content")
             Text(
                 text = "MLS",
                 modifier = Modifier.align(
@@ -83,10 +92,13 @@ fun HomeScreen() {
             modifier = Modifier
                 .padding(12.dp)
                 .clip(RoundedCornerShape(24.dp))
+                .clickable{
+                    onLogin("football")
+                }
         ) {
             Image(painterResource(id = R.drawable.nfl), contentDescription = "content")
             Text(
-                text = "Football",
+                text = "NFL",
                 modifier = Modifier.align(
                     Alignment.BottomCenter
                 )
@@ -106,4 +118,10 @@ fun HomeScreen() {
         }
 
     }
+}
+
+@Composable
+@Preview
+fun HomeScreenPreview() {
+    HomeScreen(onLogin = {})
 }
