@@ -1,14 +1,21 @@
 package com.cs4520.assignment4.databases
 
+import android.content.Context
 import com.cs4520.assignment4.databases.MLS.ISoccerApi
+import com.cs4520.assignment4.databases.MLS.SoccerApi
 import com.cs4520.assignment4.databases.MLS.SoccerDao
+import com.cs4520.assignment4.databases.MLS.SoccerDatabase
 import com.cs4520.assignment4.databases.MLS.SoccerFixture
 import com.cs4520.assignment4.databases.MLS.SoccerFixtureEntity
+import com.cs4520.assignment4.databases.NBA.AppDatabase
+import com.cs4520.assignment4.databases.NBA.BasketballApi
 import com.cs4520.assignment4.databases.NBA.BasketballGame
 import com.cs4520.assignment4.databases.NBA.BasketballGameEntity
 import com.cs4520.assignment4.databases.NBA.IBasketballApi
 import com.cs4520.assignment4.databases.NBA.BasketballDao
+import com.cs4520.assignment4.databases.NFL.FootballApi
 import com.cs4520.assignment4.databases.NFL.FootballDao
+import com.cs4520.assignment4.databases.NFL.FootballDatabase
 import com.cs4520.assignment4.databases.NFL.FootballGame
 import com.cs4520.assignment4.databases.NFL.FootballGameEntity
 import com.cs4520.assignment4.databases.NFL.IFootballApi
@@ -98,6 +105,32 @@ class SportsRepository(private val basketballApi: IBasketballApi,
             cachedProducts.map { gameEntity ->
                 FootballGame(gameEntity.game, gameEntity.league, gameEntity.teams,
                     gameEntity.scores)
+            }
+        }
+    }
+
+    companion object {
+        // Singleton prevents multiple instances of database opening at the
+        // same time.
+        @Volatile
+        private var INSTANCE: SportsRepository? = null
+
+        fun getRepository(context: Context): SportsRepository {
+            // if the INSTANCE is not null, then return it,
+            // if it is, then create the database
+            return INSTANCE ?: synchronized(this) {
+                val basketballApi = BasketballApi.sportsApi
+                val soccerApi = SoccerApi.sportsApi
+                val footballApi = FootballApi.sportsApi
+                val basketballDao = AppDatabase.getDatabase(context).basketballDao()
+                val soccerDao = SoccerDatabase.getDatabase(context).soccerDao()
+                val footballDao = FootballDatabase.getDatabase(context).footballDao()
+                val instance = SportsRepository(basketballApi, basketballDao,
+                    soccerApi, soccerDao,
+                    footballApi, footballDao)
+                INSTANCE = instance
+                // return instance
+                instance
             }
         }
     }

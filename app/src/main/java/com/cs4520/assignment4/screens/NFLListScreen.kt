@@ -58,7 +58,7 @@ fun NFLListScreen(sport: String, repository: SportsRepository) {
         networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
 
     LaunchedEffect(true) {
-//        viewModel.scheduleProductRefresh(context)
+        viewModel.scheduleProductRefresh(context)
         viewModel.loadProducts(isNetworkAvailable, sport) //specify sport
     }
 

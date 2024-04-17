@@ -63,7 +63,8 @@ fun MLSListScreen(sport: String, repository: SportsRepository) {
         networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
 
     LaunchedEffect(true) {
-//        viewModel.scheduleProductRefresh(context)
+        // trigger work manager
+        viewModel.scheduleProductRefresh(context)
         viewModel.loadProducts(isNetworkAvailable, sport) //specify sport
     }
 
