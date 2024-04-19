@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -51,6 +52,8 @@ fun MainScreen(repository: SportsRepository) {
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
             LoginScreen(navController)
+            val focusManager = LocalFocusManager.current
+            focusManager.clearFocus()
         }
         composable("home") {
             HomeScreen { sport ->
