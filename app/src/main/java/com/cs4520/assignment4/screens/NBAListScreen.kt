@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -24,7 +25,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,13 +40,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
 import com.cs4520.assignment4.ProductListViewModel
+import com.cs4520.assignment4.databases.NBA.BasketballGame
 import com.cs4520.assignment4.databases.SportsRepository
 
 @Composable
-fun NBAListScreen(sport: String, repository: SportsRepository) {
-    val viewModel = ProductListViewModel(repository)
+fun NBAListScreen(sport: String, repository: SportsRepository, navController: NavController, viewModel: ProductListViewModel) {
+//    val viewModel = ProductListViewModel(repository)
 
     val gameResultUnordered by remember { viewModel.basketballGames }
     val isLoading by remember { viewModel.isLoading }
@@ -97,7 +103,9 @@ fun NBAListScreen(sport: String, repository: SportsRepository) {
                         item.teams.away.logo,
                         item.scores.home.total,
                         item.scores.away.total,
-                        item.date)
+                        item.date,
+                        item.id,
+                        navController)
                 }
             }
         }
@@ -111,9 +119,15 @@ fun NBAListItem(homeTeamName: String,
                     awayTeamLogo: String,
                     homeTeamScore: Int,
                     awayTeamScore: Int,
-                    gameDate: String) {
+                    gameDate: String,
+                    gameId: Int,
+                    navController: NavController) {
     Card(
-        modifier = Modifier.padding(16.dp).fillMaxWidth().height(200.dp),
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+            .height(200.dp)
+            .clickable { navController.navigate("nbaStats/${gameId}") },
         backgroundColor = Color.White,
         shape = RoundedCornerShape(8.dp)
     ) {
@@ -127,7 +141,7 @@ fun NBAListItem(homeTeamName: String,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    painter = rememberImagePainter(homeTeamLogo), //painterResource(id = R.drawable.food),
+                    painter = rememberImagePainter(homeTeamLogo),
 //                    model = homeTeamLogo,
                     contentDescription = "Home Team",
                     modifier = Modifier.size(50.dp),
@@ -159,7 +173,7 @@ fun NBAListItem(homeTeamName: String,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    painter = rememberImagePainter(awayTeamLogo), // painterResource(id = R.drawable.equipment),
+                    painter = rememberImagePainter(awayTeamLogo),
 //                    model = awayTeamLogo,
                     contentDescription = "Away Team",
                     modifier = Modifier.size(50.dp),
@@ -187,7 +201,9 @@ fun NBAListItemPreview() {
         "https://media.api-sports.io/basketball/teams/161.png",
         4,
         2,
-        "2021-10-10")
+        "2021-10-10",
+        1,
+        rememberNavController())
 }
 
 //@OptIn(ExperimentalGlideComposeApi::class)

@@ -23,7 +23,10 @@ import com.cs4520.assignment4.screens.HomeScreen
 import com.cs4520.assignment4.screens.LoginScreen
 import com.cs4520.assignment4.screens.MLSListScreen
 import com.cs4520.assignment4.screens.NBAListScreen
+import com.cs4520.assignment4.screens.NBAStatsScreen
 import com.cs4520.assignment4.screens.NFLListScreen
+import com.cs4520.assignment4.screens.MLSStatsScreen
+import com.cs4520.assignment4.screens.NFLStatsScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -49,6 +52,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(repository: SportsRepository) {
     val navController = rememberNavController()
+    val viewModel = ProductListViewModel(repository)
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
             LoginScreen(navController)
@@ -65,10 +69,31 @@ fun MainScreen(repository: SportsRepository) {
             arguments = listOf(navArgument("sport") { type = NavType.StringType })
         ) { backStackEntry ->
             when (val sport = backStackEntry.arguments?.getString("sport") ?: "") {
-                "basketball" -> NBAListScreen(sport, repository)
-                "soccer" -> MLSListScreen(sport, repository)
-                "football" -> NFLListScreen(sport, repository)
+                "basketball" -> NBAListScreen(sport, repository, navController, viewModel)
+                "soccer" -> MLSListScreen(sport, repository, navController, viewModel)
+                "football" -> NFLListScreen(sport, repository, navController, viewModel)
             }
+        }
+        composable(
+            route = "nbaStats/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val gameId = backStackEntry.arguments?.getInt("id") ?: 0
+            NBAStatsScreen(gameId, viewModel)
+        }
+        composable(
+            route = "mlsStats/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val gameId = backStackEntry.arguments?.getInt("id") ?: 0
+            MLSStatsScreen(gameId, viewModel)
+        }
+        composable(
+            route = "nflStats/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val gameId = backStackEntry.arguments?.getInt("id") ?: 0
+            NFLStatsScreen(gameId, viewModel)
         }
     }
 }

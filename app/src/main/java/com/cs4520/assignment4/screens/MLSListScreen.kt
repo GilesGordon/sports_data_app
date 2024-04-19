@@ -7,6 +7,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -39,6 +40,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
 import com.cs4520.assignment4.ProductListViewModel
 import com.cs4520.assignment4.databases.SportsRepository
@@ -47,8 +50,8 @@ import java.time.LocalTime
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MLSListScreen(sport: String, repository: SportsRepository) {
-    val viewModel = ProductListViewModel(repository)
+fun MLSListScreen(sport: String, repository: SportsRepository, navController: NavController, viewModel: ProductListViewModel) {
+//    val viewModel = ProductListViewModel(repository)
 
     val gameResultUnordered by remember { viewModel.soccerFixtures }
     val isLoading by remember { viewModel.isLoading }
@@ -124,7 +127,9 @@ fun MLSListScreen(sport: String, repository: SportsRepository) {
                         homeScore,
                         awayScore,
                         period,
-                        item.fixture.date)
+                        item.fixture.date,
+                        item.fixture.id,
+                        navController)
                 }
             }
         }
@@ -139,9 +144,11 @@ fun MLSListItem(homeTeamName: String,
                     homeTeamScore: Int,
                     awayTeamScore: Int,
                     period: String,
-                    gameDate: String) {
+                    gameDate: String,
+                    gameId: Int,
+                    navController: NavController) {
     Card(
-        modifier = Modifier.padding(16.dp).fillMaxWidth().height(200.dp),
+        modifier = Modifier.padding(16.dp).fillMaxWidth().height(200.dp).clickable { navController.navigate("mlsStats/${gameId}") },
         backgroundColor = Color.White,
         shape = RoundedCornerShape(8.dp)
     ) {
@@ -220,5 +227,7 @@ fun MLSListItemPreview() {
         4,
         2,
         "fulltime",
-        "2021-10-10")
+        "2021-10-10",
+        1,
+        rememberNavController())
 }
