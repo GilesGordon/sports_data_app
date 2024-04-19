@@ -36,7 +36,7 @@ fun NFLStatsScreen(gameId: Int, viewModel: ProductListViewModel) {
 
     if (game != null) {
         Column(modifier = Modifier.fillMaxSize().padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "Game ID: ${game.game.id}", style = MaterialTheme.typography.h6)
+            Text(text = "${game.teams.home.name} vs ${game.teams.away.name}", style = MaterialTheme.typography.h6)
             Text(text = "Date: ${game.game.date.date}")
             Text(text = "Time: ${game.game.date.time}")
             Text(text = "Timezone: ${game.game.date.timezone}")

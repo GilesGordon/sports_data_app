@@ -37,7 +37,7 @@ fun MLSStatsScreen(fixtureId: Int, viewModel: ProductListViewModel) {
 
     if (fixture != null) {
         Column(modifier = Modifier.fillMaxSize().padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "Fixture ID: ${fixture.fixture.id}", style = MaterialTheme.typography.h6)
+            Text(text = "${fixture.teams.home.name} vs ${fixture.teams.away.name}", style = MaterialTheme.typography.h6)
             Text(text = "Date: ${fixture.fixture.date}")
             Text(text = "Timezone: ${fixture.fixture.timezone}")
             Text(text = "Referee: ${fixture.fixture.referee ?: "N/A"}")
