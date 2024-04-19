@@ -19,6 +19,7 @@ import com.cs4520.assignment4.databases.NFL.FootballApi
 import com.cs4520.assignment4.databases.NFL.FootballDatabase
 import com.cs4520.assignment4.databases.SportsRepository
 import com.cs4520.assignment4.screens.HomeScreen
+import com.cs4520.assignment4.screens.LoginScreen
 import com.cs4520.assignment4.screens.MLSListScreen
 import com.cs4520.assignment4.screens.NBAListScreen
 import com.cs4520.assignment4.screens.NFLListScreen
@@ -47,7 +48,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(repository: SportsRepository) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = "login") {
+        composable("login") {
+            LoginScreen(navController)
+        }
         composable("home") {
             HomeScreen { sport ->
                 navController.navigate("productList/$sport")
@@ -61,7 +65,6 @@ fun MainScreen(repository: SportsRepository) {
                 "basketball" -> NBAListScreen(sport, repository)
                 "soccer" -> MLSListScreen(sport, repository)
                 "football" -> NFLListScreen(sport, repository)
-                else -> null
             }
         }
     }
