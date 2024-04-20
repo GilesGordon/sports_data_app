@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +38,7 @@ fun HomeScreen(onLogin: (sport: String?) -> Unit) {
                 .clickable{
                     onLogin("basketball")
                 }
+                .testTag("NBA")
         ) {
             Image(painterResource(id = R.drawable.nba), contentDescription = "content", modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop )
             Text(
@@ -66,6 +68,7 @@ fun HomeScreen(onLogin: (sport: String?) -> Unit) {
                 .clickable{
                     onLogin("soccer")
                 }
+                .testTag("MLS")
         ) {
             Image(painterResource(id = R.drawable.mls), contentDescription = "content")
             Text(
@@ -95,6 +98,7 @@ fun HomeScreen(onLogin: (sport: String?) -> Unit) {
                 .clickable{
                     onLogin("football")
                 }
+                .testTag("NFL")
         ) {
             Image(painterResource(id = R.drawable.nfl), contentDescription = "content")
             Text(

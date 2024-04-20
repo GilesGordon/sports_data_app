@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -39,6 +40,7 @@ fun LoginScreen(navController: NavController) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
+                .testTag("username_input")
         )
         TextField(
             value = password,
@@ -51,6 +53,7 @@ fun LoginScreen(navController: NavController) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
+                .testTag("password_input")
         )
         Button(
             onClick = {
@@ -73,6 +76,7 @@ fun LoginScreen(navController: NavController) {
                     end.linkTo(parent.end)
                     width = Dimension.value(200.dp)
                 }
+                .testTag("login_button")
         ) {
             Text("Login")
         }
