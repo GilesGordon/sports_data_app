@@ -19,6 +19,20 @@ import com.cs4520.assignment4.databases.MLS.SoccerStatus
 import com.cs4520.assignment4.databases.MLS.SoccerTeam
 import com.cs4520.assignment4.databases.MLS.SoccerTeams
 import com.cs4520.assignment4.databases.MLS.SoccerVenue
+import com.cs4520.assignment4.databases.NFL.Country
+import com.cs4520.assignment4.databases.NFL.Date
+import com.cs4520.assignment4.databases.NFL.FootballDao
+import com.cs4520.assignment4.databases.NFL.FootballDatabase
+import com.cs4520.assignment4.databases.NFL.FootballGame
+import com.cs4520.assignment4.databases.NFL.FootballGameEntity
+import com.cs4520.assignment4.databases.NFL.Game
+import com.cs4520.assignment4.databases.NFL.League
+import com.cs4520.assignment4.databases.NFL.Scores
+import com.cs4520.assignment4.databases.NFL.Status
+import com.cs4520.assignment4.databases.NFL.Team
+import com.cs4520.assignment4.databases.NFL.TeamScore
+import com.cs4520.assignment4.databases.NFL.Teams
+import com.cs4520.assignment4.databases.NFL.Venue
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.After
@@ -100,6 +114,71 @@ class DatabaseTest {
         )
     )
 
+    private lateinit var footballDao: FootballDao
+    private lateinit var footballdb: FootballDatabase
+    private val footballGame = FootballGameEntity(
+        game = Game(
+            id = 1,
+            stage = "Final",
+            week = "Week 1",
+            date = Date(
+                timezone = "GMT",
+                date = "2024-04-19",
+                time = "22:37",
+                timestamp = 1618875455
+            ),
+            venue = Venue(
+                name = "Stadium",
+                city = "City"
+            ),
+            status = Status(
+                short = "HT",
+                long = "Half Time",
+                timer = null
+            )
+        ),
+        league = League(
+            id = 1,
+            name = "Premier League",
+            season = "2023-2024",
+            logo = "logo_url",
+            country = Country(
+                name = "England",
+                code = "EN",
+                flag = "flag_url"
+            )
+        ),
+        teams = Teams(
+            home = Team(
+                id = 1,
+                name = "Team A",
+                logo = "logo_url"
+            ),
+            away = Team(
+                id = 2,
+                name = "Team B",
+                logo = "logo_url"
+            )
+        ),
+        scores = Scores(
+            home = TeamScore(
+                quarter_1 = 1,
+                quarter_2 = 2,
+                quarter_3 = 3,
+                quarter_4 = 4,
+                overtime = null,
+                total = 10
+            ),
+            away = TeamScore(
+                quarter_1 = 1,
+                quarter_2 = 2,
+                quarter_3 = 3,
+                quarter_4 = 4,
+                overtime = null,
+                total = 10
+            )
+        )
+    )
 
     @Before
     fun createDb() {
@@ -107,6 +186,10 @@ class DatabaseTest {
         db = Room.inMemoryDatabaseBuilder(
             context, SoccerDatabase::class.java).allowMainThreadQueries().build()
         soccerDao = db.soccerDao()
+
+        footballdb = Room.inMemoryDatabaseBuilder(
+            context, FootballDatabase::class.java).allowMainThreadQueries().build()
+        footballDao = footballdb.footballDao()
     }
 
     @After
@@ -115,7 +198,7 @@ class DatabaseTest {
     }
 
     @Test
-    fun writeUserAndReadInList() = runBlocking {
+    fun writeAndReadInList() = runBlocking {
 //        val user: User = TestUtil.createUser(3).apply {
 //            setName("george")
 //        }
@@ -124,5 +207,13 @@ class DatabaseTest {
 
         val byName = soccerDao.getAllFixtures()
         assertThat(byName[0], equalTo(soccerFixture))
+    }
+
+    @Test
+    fun insertAndGetFootballGame() = runBlocking {
+        footballDao.insertGames(listOf(footballGame))
+
+        val byName = footballDao.getAllGames()
+        assertThat(byName[0], equalTo(footballGame))
     }
 }
